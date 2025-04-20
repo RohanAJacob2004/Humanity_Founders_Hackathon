@@ -1,178 +1,240 @@
-import React from 'react';
-import { Bell, User, Link, PlusCircle, Settings, Users, Send, RefreshCcw } from "lucide-react";
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Bell, User, Link, PlusCircle, Settings, Users, Send, RefreshCcw } from 'lucide-react';
+import axios from 'axios';
 
 const AIAgent = () => {
-
-
     const [userEmail, setUserEmail] = useState('');
+    const [messages, setMessages] = useState([]);
+    const [input, setInput] = useState('');
+    const [loading, setLoading] = useState(false);
+    const chatContainerRef = useRef(null); // Ref for scrolling
 
     useEffect(() => {
-        // Try to get email from localStorage first, then sessionStorage
+        // Attempt to get user email from storage
         const email = localStorage.getItem('email') || sessionStorage.getItem('email');
+        let displayEmail = 'User'; // Default display name
         if (email) {
             try {
-                // Remove quotes if the email was stored with JSON.stringify
+                // If email is stored as JSON string (e.g., "\"user@example.com\"")
                 const parsedEmail = JSON.parse(email);
-                setUserEmail(parsedEmail.split('@')[0]);
+                displayEmail = parsedEmail.split('@')[0];
             } catch {
-                setUserEmail(email);
+                // If email is stored as a plain string
+                displayEmail = email.includes('@') ? email.split('@')[0] : email;
             }
         }
-    }, []);
+        setUserEmail(displayEmail);
+
+        // Set initial AI welcome message using the derived display name
+        setMessages([
+            {
+                type: 'assistant',
+                // Use displayEmail which defaults to 'User' if email is not found/parsed
+                content: `Welcome Back, ${displayEmail}!\nHow can I help you today?`
+            }
+        ]);
+    }, []); // Run only once on mount
+
+    // Effect to scroll down when messages change
+    useEffect(() => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+    }, [messages]);
+
+    const handleSend = async () => {
+        const trimmedInput = input.trim();
+        if (!trimmedInput) return;
+
+        const userMessage = { type: 'user', content: trimmedInput };
+        const newMessages = [...messages, userMessage];
+
+        setMessages(newMessages);
+        setInput('');
+        setLoading(true);
+
+        try {
+            // *** MODIFICATION: Point to the new Gemini backend endpoint ***
+            const res = await axios.post(
+                '/api/gemini', // Changed endpoint
+                {
+                    // *** MODIFICATION: Send messages in a format the backend expects ***
+                    // Assuming backend /api/gemini expects an array of message objects
+                    // The backend will handle converting this to Gemini's 'contents' format
+                    // and mapping 'assistant' role to 'model'.
+                    messages: newMessages.map(m => ({
+                        role: m.type, // Send 'user' or 'assistant'
+                        content: m.content,
+                    }))
+                    // Optional: You might send model info if your backend supports it
+                    // model: 'gemini-pro' // Example model name
+                }
+            );
+
+            // *** MODIFICATION: Assuming backend returns consistent output format ***
+            // Keep this if your /api/gemini route returns { output_text: '...' }
+            const reply = res.data.output_text || '⚠️ No response received from the API.';
+            setMessages(prevMessages => [...prevMessages, { type: 'assistant', content: reply }]);
+
+        } catch (err) {
+            console.error("Error calling Gemini API endpoint:", err);
+            let errorMessage = '⚠️ Something went wrong.';
+            if (err.response) {
+                // E.g., backend returned a specific error
+                errorMessage = `⚠️ Error: ${err.response.data.error || err.response.statusText || 'Failed to get response.'}`;
+            } else if (err.request) {
+                errorMessage = '⚠️ Could not reach the API. Please check the connection.';
+            }
+            setMessages(prevMessages => [...prevMessages, { type: 'assistant', content: errorMessage }]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSend();
+        }
+    };
+
+    const handleReset = () => {
+         // Reset messages, keeping the initial welcome message
+         const displayEmail = userEmail || 'User'; // Use current state or default
+         setMessages([
+             {
+                 type: 'assistant',
+                 content: `Welcome Back, ${displayEmail}!\nHow can I help you today?`
+             }
+         ]);
+         setInput(''); // Clear input field as well
+         setLoading(false); // Ensure loading state is reset
+    }
 
     return (
-        <div className="flex flex-col h-screen w-full">
+        <div className="flex flex-col h-screen w-full bg-gray-50"> {/* Added bg color */}
             {/* Sticky Header */}
-            <div className="fixed top-0 left-[245px] right-0 z-50 h-16 bg-white border-b border-[#E5E5E5] flex items-center justify-between px-6">
-                {/* Left side - AI Agent */}
+            <div className="sticky top-0 left-[245px] right-0 z-50 h-16 bg-white border-b border-[#E5E5E5] flex items-center justify-between px-6">
                 <div className="flex items-center">
                     <h1 className="text-lg font-medium text-gray-900">AI Agent</h1>
                 </div>
-
-                {/* Right side - Profile */}
                 <div className="flex items-center space-x-6">
-                    {/* Notifications */}
                     <div className="relative">
-                        <Bell className="text-gray-500 text-xl cursor-pointer" />
-                        <div className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></div>
+                        <Bell className="text-gray-500 text-xl cursor-pointer hover:text-gray-700" />
+                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full border border-white" />
                     </div>
-
-                    {/* User Profile */}
                     <div className="flex items-center space-x-3">
                         <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                            <User className="text-gray-500" />
+                            <User className="text-gray-500 w-5 h-5" /> {/* Adjusted icon size */}
                         </div>
-                        <div>
-                            <p className="text-sm font-medium text-gray-900">{userEmail}</p>
-                        </div>
+                        {/* Display userEmail state which holds the name part */}
+                        <p className="text-sm font-medium text-gray-900">{userEmail}</p>
                     </div>
                 </div>
             </div>
 
-            {/* Main Content */}
-            <div className="flex-1 p-6 mt-16">
-                {/* AI Agent Section */}
-                <div className="flex flex-col h-full bg-white rounded-lg p-6">
+            {/* Main Content Area */}
+            {/* Use flex-1 and overflow-hidden to manage layout */}
+            <div className="flex-1 flex flex-col overflow-hidden p-6 pt-0 mt-16"> {/* Added pt-0 */}
+                 {/* Inner container for chat content */}
+                <div className="flex-1 flex flex-col bg-white rounded-lg shadow-sm overflow-hidden"> {/* Added shadow */}
                     {/* AI Agent Header */}
-                    <div className="flex justify-between items-center mb-6">
-                        <div className="flex items-center gap-4">
-                            <img src="/chatbot.png" alt="chatbot" className="h-14 w-14" />
+                    <div className="flex justify-between items-center p-4 border-b border-gray-200"> {/* Adjusted padding */}
+                        <div className="flex items-center gap-3"> {/* Reduced gap */}
+                            <img src="/chatbot.png" alt="chatbot" className="h-10 w-10" /> {/* Adjusted size */}
                             <span className="text-[#1C1C1C] text-base font-medium">AI Agent</span>
                         </div>
-                        <button className="flex items-center gap-4 text-[#1C1C1C]">
-                            <RefreshCcw className="w-5 h-5" />
-                            <span>Reset</span>
+                        <button
+                            className="flex items-center gap-2 text-[#555] hover:text-black" // Adjusted styles
+                            onClick={handleReset} // Use handleReset
+                        >
+                            <RefreshCcw className="w-4 h-4" /> {/* Adjusted size */}
+                            <span className="text-sm">Reset</span> {/* Added text size */}
                         </button>
                     </div>
 
-                    {/* Divider */}
-                    <div className="w-full h-[1px] bg-[#CCCCCC] my-4"></div>
-
-                    {/* Chat Container */}
-                    <div className="flex-1 flex flex-col gap-6 overflow-y-auto">
-                        {/* AI Welcome Message */}
-                        <div className="flex gap-2.5">
-                            <img src="/chatbot.png" alt="AI Assistant" className="w-12 h-12" />
-                            <div className="bg-gradient-to-r from-[#E8F1FF] to-[#F6EEF6] border border-gradient-to-r from-[#CCD7E9] to-[#DBD7E9] rounded-md p-4 max-w-[405px]">
-                                <div className="text-[#333333]">
-                                    <p className="font-medium mb-4">Welcome Back, Kadin!</p>
-                                    <p>How can I help you today?</p>
+                    {/* Chat Container - Takes remaining space and scrolls */}
+                    <div ref={chatContainerRef} className="flex-1 flex flex-col gap-4 p-4 overflow-y-auto"> {/* Adjusted gap/padding */}
+                        {messages.map((msg, i) => (
+                            <div key={i} className={`flex gap-2.5 ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                {msg.type === 'assistant' && (
+                                    <img src="/chatbot.png" alt="AI" className="w-8 h-8 self-end mb-1" /> // Adjusted size/alignment
+                                )}
+                                <div
+                                    className={`p-3 rounded-lg border text-sm text-[#333] max-w-[70%] whitespace-pre-wrap ${ // Added text-sm, whitespace-pre-wrap
+                                        msg.type === 'user'
+                                            ? 'bg-gray-100 border-gray-200' // Simplified user style
+                                            : 'bg-gradient-to-r from-blue-50 to-purple-50 border-blue-100' // Simplified assistant style
+                                    }`}
+                                >
+                                    {/* No need to split by \n if using whitespace-pre-wrap */}
+                                    {msg.content}
                                 </div>
+                                {msg.type === 'user' && (
+                                    <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center self-end mb-1"> {/* Adjusted size/alignment */}
+                                        <User className="text-gray-500 w-4 h-4" /> {/* Adjusted icon size */}
+                                    </div>
+                                )}
                             </div>
-                        </div>
-
-                        {/* User Message */}
-                        <div className="flex gap-2.5 justify-end">
-                            <div className="bg-[#F8F8F8] border border-[#CCD7E9] rounded-md p-4 max-w-[620px]">
-                                <p className="text-[#333333]">Hey, I want to create a new referral campaign, but I'd like some help from AI to make sure it's set up correctly and performs well. Can you guide me through it?</p>
-                            </div>
-                            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-                                <User className="text-gray-500" />
-                            </div>
-                        </div>
-
-                        {/* AI Response */}
-                        <div className="flex gap-2.5">
-                            <img src="/chatbot.png" alt="AI Assistant" className="w-12 h-12" />
-                            <div className="bg-gradient-to-r from-[#E8F1FF] to-[#F6EEF6] border border-gradient-to-r from-[#CCD7E9] to-[#DBD7E9] rounded-md p-4 max-w-[630px]">
-                                <div className="text-[#333333] space-y-4">
-                                    <p>I'll help you create a high-converting referral campaign. Here's what I see from your dashboard:</p>
-                                    <ul className="space-y-2">
-                                        <li>• 3 New Referrals</li>
-                                        <li>• 1 New Customer Sending Referrals</li>
-                                        <li>• "Summer Campaign" is performing 21% better than other campaigns</li>
-                                    </ul>
-                                    <p>Would you like to use insights from your successful Summer Campaign to optimize this new campaign?</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* User Message */}
-                        <div className="flex gap-2.5 justify-end">
-                            <div className="bg-[#F8F8F8] border border-[#CCD7E9] rounded-md p-4 max-w-[620px]">
-                                <p className="text-[#333333]">Yes, that would be great! What made the Summer Campaign so successful?</p>
-                            </div>
-                            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-                                <User className="text-gray-500" />
-                            </div>
-                        </div>
-
-                        {/* AI Response */}
-                        <div className="flex gap-2.5">
-                            <img src="/chatbot.png" alt="AI Assistant" className="w-12 h-12" />
-                            <div className="bg-gradient-to-r from-[#E8F1FF] to-[#F6EEF6] border border-gradient-to-r from-[#CCD7E9] to-[#DBD7E9] rounded-md p-4 max-w-[630px]">
-                                <div className="text-[#333333] space-y-4">
-                                    <p>The Summer Campaign's success can be attributed to several key factors:</p>
-                                    <ul className="space-y-2">
-                                        <li>1. Double reward structure (both referrer and referee received benefits)</li>
-                                        <li>2. Time-limited offers creating urgency</li>
-                                        <li>3. Simplified sharing process via social media</li>
-                                        <li>4. Personalized referral messages</li>
-                                    </ul>
-                                    <p>Would you like me to help you set up a similar structure for your new campaign?</p>
-                                </div>
-                            </div>
-                        </div>
+                        ))}
+                        {/* Display loading indicator */}
+                        {loading && (
+                             <div className="flex justify-start gap-2.5">
+                                 <img src="/chatbot.png" alt="AI" className="w-8 h-8 self-end mb-1" />
+                                 <div className="p-3 rounded-lg border border-blue-100 bg-gradient-to-r from-blue-50 to-purple-50 text-sm text-gray-500 italic">
+                                    Typing...
+                                 </div>
+                             </div>
+                        )}
                     </div>
 
-                    {/* Quick Links and Chat Input Section */}
-                    <div className="mt-auto">
-                        {/* Divider */}
-                        <div className="w-full h-[1px] bg-[#CCCCCC]"></div>
+                    {/* Input Area */}
+                    <div className="mt-auto border-t border-gray-200 p-4"> {/* Adjusted padding */}
+                        {/* Quick Links (Optional - kept as is) */}
+                        <div className="pb-4">
+                             <h3 className="text-[#1C1C1C] text-xs font-medium mb-3 text-gray-500 uppercase">Quick Actions</h3> {/* Style adjustments */}
+                             <div className="flex flex-wrap gap-2"> {/* Use flex-wrap and smaller gap */}
+                                 {/* Reduced padding and text size for smaller screens */}
+                                 <button className="flex items-center gap-2 px-3 py-1.5 border border-[#3159FF] rounded-md text-[#3159FF] hover:bg-blue-50 text-xs">
+                                     <Link className="w-4 h-4" />
+                                     <span>Send Referral</span>
+                                 </button>
+                                 <button className="flex items-center gap-2 px-3 py-1.5 border border-[#3159FF] rounded-md text-[#3159FF] hover:bg-blue-50 text-xs">
+                                     <PlusCircle className="w-4 h-4" />
+                                     <span>Create Campaign</span>
+                                 </button>
+                                 <button className="flex items-center gap-2 px-3 py-1.5 border border-[#3159FF] rounded-md text-[#3159FF] hover:bg-blue-50 text-xs">
+                                     <Settings className="w-4 h-4" />
+                                     <span>Follow-up</span> {/* Simplified text */}
+                                 </button>
+                                 <button className="flex items-center gap-2 px-3 py-1.5 border border-[#3159FF] rounded-md text-[#3159FF] hover:bg-blue-50 text-xs">
+                                     <Users className="w-4 h-4" />
+                                     <span>View Referral</span>
+                                 </button>
+                             </div>
+                         </div>
 
-                        {/* Quick Links Section */}
-                        <div className="py-4">
-                            <h3 className="text-[#1C1C1C] text-sm font-medium mb-4">Quick Links</h3>
-                            <div className="flex gap-12">
-                                <button className="flex items-center gap-2.5 px-[46.5px] py-3 border border-[#3159FF] rounded-[10px] text-[#3159FF]">
-                                    <Link className="w-5 h-5" />
-                                    <span className="text-sm">Send Referral</span>
-                                </button>
-                                <button className="flex items-center gap-2.5 px-[37.5px] py-3 border border-[#3159FF] rounded-[10px] text-[#3159FF]">
-                                    <PlusCircle className="w-5 h-5" />
-                                    <span className="text-sm">Create Campaign</span>
-                                </button>
-                                <button className="flex items-center gap-2.5 px-[57.5px] py-3 border border-[#3159FF] rounded-[10px] text-[#3159FF]">
-                                    <Settings className="w-5 h-5" />
-                                    <span className="text-sm">FOLLOW-UP</span>
-                                </button>
-                                <button className="flex items-center gap-2.5 px-[46px] py-3 border border-[#3159FF] rounded-[10px] text-[#3159FF]">
-                                    <Users className="w-5 h-5" />
-                                    <span className="text-sm">VIEW REFERRAL</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Chat Input Section */}
-                        <div className="flex items-center gap-4 bg-[#FAFAFA] border border-[#E6E6E6] p-4">
+                        {/* Chat Input */}
+                        <div className="flex items-center gap-2 bg-gray-100 border border-gray-300 rounded-lg p-2"> {/* Adjusted styles */}
                             <input
                                 type="text"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                onKeyPress={handleKeyPress}
                                 placeholder="Ask me anything..."
-                                className="flex-1 bg-transparent text-[#666666] placeholder-[#666666] outline-none"
+                                className="flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-500 outline-none px-2" // Adjusted styles
+                                disabled={loading} // Disable input while loading
                             />
-                            <button className="w-10 h-10 rounded-full bg-[#7367F01A] flex items-center justify-center">
-                                <Send className="w-[22px] h-[22px] text-[#3159FF]" />
+                            <button
+                                onClick={handleSend}
+                                disabled={loading || !input.trim()} // Disable if loading or input is empty
+                                className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                                    loading || !input.trim()
+                                        ? 'bg-gray-300 cursor-not-allowed'
+                                        : 'bg-blue-100 hover:bg-blue-200' // Use blue shades
+                                }`}
+                            >
+                                <Send className={`w-4 h-4 ${loading || !input.trim() ? 'text-gray-500' : 'text-[#3159FF]'}`} /> {/* Adjusted size and color */}
                             </button>
                         </div>
                     </div>
@@ -182,4 +244,4 @@ const AIAgent = () => {
     );
 };
 
-export default AIAgent; 
+export default AIAgent;

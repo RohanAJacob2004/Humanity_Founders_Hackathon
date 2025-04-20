@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { InfoIcon, DollarSignIcon, PercentIcon, TrendingDownIcon, TrendingUpIcon, UsersIcon, Bell, User } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
@@ -7,6 +7,16 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import Header from './Header';
 
 const Dashboard = () => {
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        console.log("Component mounted, setting isVisible to true");
+        // Add a small delay to ensure the initial false state is rendered
+        setTimeout(() => {
+            setIsVisible(true);
+        }, 100);
+    }, []);
+
     // Metrics Card Data
     const metricCards = [
         {
@@ -196,7 +206,7 @@ const Dashboard = () => {
             <div className="flex-1 overflow-auto p-6">
                 {/* Metrics Cards */}
                 <Card className="flex items-start gap-[43.5px] p-5 w-full bg-white rounded-[10px] mb-8">
-                    <CardContent className="flex items-start gap-[43.5px] p-0 w-full">
+                    <CardContent className="flex items-start gap-[70px] p-0 w-full">
                         {metricCards.map((card, index) => (
                             <React.Fragment key={card.title}>
                                 <div className="inline-flex items-start gap-2.5">
@@ -252,14 +262,14 @@ const Dashboard = () => {
                 </Card>
 
                 {/* Performance Metrics */}
-                <div className="flex flex-wrap gap-[22px] w-full">
+                <div className="flex flex-wrap gap-24 w-full">
                     {metricsData.map((metric, index) => (
                         <Card
                             key={index}
                             className="w-[260px] h-[200px] rounded-[10px] overflow-hidden flex-shrink-0"
                         >
                             <CardContent className="p-0 h-full relative">
-                                <div className="inline-flex items-center gap-[5px] absolute top-[21px] left-[41px]">
+                                <div className="inline-flex items-center gap-[5px] absolute top-[21px] left-[30px]">
                                     <div className="font-medium text-[#333333] text-base leading-5 whitespace-nowrap [font-family:'Inter',Helvetica]">
                                         {metric.title}
                                     </div>
@@ -275,7 +285,7 @@ const Dashboard = () => {
                                             {metric.percentage}
                                         </div>
 
-                                        <div className="absolute w-[110px] h-[110px] top-0 left-0 bg-[url(/ellipse-3916.svg)] bg-[100%_100%]">
+                                        <div className="absolute w-[110px] h-[110px] top-0 left-0">
                                             <svg
                                                 width="110"
                                                 height="110"
@@ -287,11 +297,23 @@ const Dashboard = () => {
                                                     cy="55"
                                                     r="50"
                                                     fill="none"
+                                                    stroke="#E6E6E6"
+                                                    strokeWidth="10"
+                                                />
+                                                <circle
+                                                    cx="55"
+                                                    cy="55"
+                                                    r="50"
+                                                    fill="none"
                                                     stroke={metric.color}
                                                     strokeWidth="10"
-                                                    strokeDasharray={`${metric.progressPercentage * 3.14}`}
-                                                    strokeDashoffset="0"
+                                                    strokeDasharray={`${metric.progressPercentage * 3.14}, 314`}
+                                                    strokeDashoffset={isVisible ? "0" : "314"}
                                                     transform="rotate(-90, 55, 55)"
+                                                    style={{
+                                                        transition: "stroke-dashoffset 2.5s ease-in-out",
+                                                        willChange: "stroke-dashoffset"
+                                                    }}
                                                 />
                                             </svg>
                                         </div>
@@ -341,11 +363,23 @@ const Dashboard = () => {
                                 </div>
 
                                 <div className="absolute top-[57px] left-[54px] w-[592px] h-[90px]">
-                                    <img
+                                    <svg
                                         className="w-full h-full"
-                                        alt="Performance trend line"
-                                        src="/vector-657.svg"
-                                    />
+                                        viewBox="0 0 592 90"
+                                        fill="none"
+                                    >
+                                        <path
+                                            d="M0 90 L148 45 L296 0 L444 45 L592 90"
+                                            stroke="#3059fe"
+                                            strokeWidth="2"
+                                            strokeDasharray="1000"
+                                            strokeDashoffset={isVisible ? "0" : "1000"}
+                                            style={{
+                                                transition: "stroke-dashoffset 3s ease-in-out",
+                                                willChange: "stroke-dashoffset"
+                                            }}
+                                        />
+                                    </svg>
                                 </div>
 
                                 <div className="absolute top-[41px] left-[149px] h-[298px]">
@@ -400,18 +434,41 @@ const Dashboard = () => {
 
                             <CardContent className="flex items-center justify-between">
                                 <div className="relative w-[150px] h-[150px]">
-                                    <div className="h-[150px] bg-[url(/ellipse-971.svg)] bg-[100%_100%]">
-                                        <img
-                                            className="absolute w-[75px] h-[142px] top-0 left-0"
-                                            alt="Donut chart segment"
-                                            src="/ellipse-973.svg"
+                                    <svg
+                                        width="150"
+                                        height="150"
+                                        viewBox="0 0 150 150"
+                                    >
+                                        <circle
+                                            cx="75"
+                                            cy="75"
+                                            r="60"
+                                            fill="none"
+                                            stroke="#EDEAFC"
+                                            strokeWidth="15"
                                         />
-                                        <img
-                                            className="absolute w-[105px] h-[149px] top-px left-[45px]"
-                                            alt="Donut chart segment"
-                                            src="/ellipse-972.svg"
+                                        <circle
+                                            cx="75"
+                                            cy="75"
+                                            r="60"
+                                            fill="none"
+                                            stroke="url(#gradient)"
+                                            strokeWidth="15"
+                                            strokeDasharray="377"
+                                            strokeDashoffset={isVisible ? "188.4" : "377"}
+                                            transform="rotate(-90, 75, 75)"
+                                            style={{
+                                                transition: "stroke-dashoffset 2.5s ease-in-out",
+                                                willChange: "stroke-dashoffset"
+                                            }}
                                         />
-                                    </div>
+                                        <defs>
+                                            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                <stop offset="0%" stopColor="rgba(48,90,255,0.8)" />
+                                                <stop offset="100%" stopColor="rgba(181,210,255,1)" />
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
                                 </div>
 
                                 <div className="w-[134px]">
