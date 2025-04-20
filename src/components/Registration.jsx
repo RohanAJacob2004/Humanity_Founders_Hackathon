@@ -1,0 +1,176 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FaGoogle, FaFacebook, FaTwitter, FaLinkedin, FaEye, FaEyeSlash, FaRobot } from 'react-icons/fa';
+
+const Registration = () => {
+
+
+
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+        confirmPassword: '',
+    });
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (formData.password !== formData.confirmPassword) {
+            alert("Passwords do not match.");
+            return;
+        }
+
+        try {
+            const requestBody = {
+                email: formData.email,
+                password: formData.password
+            };
+
+            const res = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => null);
+                throw new Error(errorData?.message || 'Registration failed');
+            }
+
+            const data = await res.json();
+            alert('Registration successful!');
+            setFormData({ email: '', password: '', confirmPassword: '' });
+        } catch (error) {
+            console.error('Registration error:', error);
+            alert(error.message || 'An error occurred during registration');
+        }
+    };
+
+    return (
+        <div className="fixed inset-0 bg-[#F5F7FA] flex items-center justify-center p-4">
+            <div className="w-full max-w-[695px] bg-white rounded-[20px] p-8 shadow-lg">
+                <h1 className="text-2xl font-semibold text-gray-700 text-center mb-8">
+                    Register for ReferralHub
+                </h1>
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Email Input */}
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-700 text-left">Email Id</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="Enter your email"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+
+                    {/* Password Input */}
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-700 text-left">Create Password</label>
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                placeholder="Create a password"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-3 top-4 text-gray-500"
+                            >
+                                {showPassword ? <FaEye /> : <FaEyeSlash />}
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Confirm Password Input */}
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-700 text-left">Confirm Password</label>
+                        <div className="relative">
+                            <input
+                                type={showConfirmPassword ? "text" : "password"}
+                                name="confirmPassword"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                                placeholder="Confirm your password"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                className="absolute right-3 top-4 text-gray-500"
+                            >
+                                {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Sign Up Button */}
+                    <button
+                        type="submit"
+                        className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
+                    >
+                        Sign Up
+                    </button>
+
+                    {/* Divider */}
+                    <div className="flex items-center justify-center space-x-4">
+                        <div className="h-px bg-gray-300 flex-1"></div>
+                        <span className="text-gray-500">or</span>
+                        <div className="h-px bg-gray-300 flex-1"></div>
+                    </div>
+
+                    {/* Social Login Buttons */}
+                    <div className="flex justify-center space-x-4">
+                        <button className="w-11 h-11 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
+                            <FaGoogle className="text-gray-600" />
+                        </button>
+                        <button className="w-11 h-11 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
+                            <FaFacebook className="text-gray-600" />
+                        </button>
+                        <button className="w-11 h-11 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
+                            <FaTwitter className="text-gray-600" />
+                        </button>
+                        <button className="w-11 h-11 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
+                            <FaLinkedin className="text-gray-600" />
+                        </button>
+                    </div>
+                </form>
+
+                <p className="text-center mt-6 text-gray-600">
+                    Already have an account?{' '}
+                    <Link to="/login" className="text-blue-600 hover:underline">
+                        Sign In
+                    </Link>
+                </p>
+            </div>
+
+            {/* Chatbot Icon */}
+            <div className="fixed bottom-8 right-8">
+                <button className="w-15 h-15 bg-white rounded-full shadow-lg p-4 hover:bg-gray-50 transition-colors">
+                    <FaRobot className="text-gray-600" />
+                </button>
+            </div>
+        </div>
+    );
+};
+
+export default Registration; 
