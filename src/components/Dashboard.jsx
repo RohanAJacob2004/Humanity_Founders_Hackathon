@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Separator } from "./ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
+import Header from './Header';
 
 const Dashboard = () => {
     // Metrics Card Data
@@ -189,33 +190,7 @@ const Dashboard = () => {
 
     return (
         <div className="flex flex-col h-full">
-            {/* Sticky Header */}
-            <div className="sticky top-0 z-10 h-16 bg-white border-b border-[#E5E5E5] flex items-center justify-between px-6">
-                {/* Left side - Dashboard */}
-                <div className="flex items-center">
-                    <h1 className="text-lg font-medium text-gray-900">Dashboard</h1>
-                </div>
-
-                {/* Right side - Profile */}
-                <div className="flex items-center space-x-6">
-                    {/* Notifications */}
-                    <div className="relative">
-                        <Bell className="text-gray-500 text-xl cursor-pointer" />
-                        <div className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></div>
-                    </div>
-
-                    {/* User Profile */}
-                    <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                            <User className="text-gray-500" />
-                        </div>
-                        <div>
-                            <p className="text-sm font-medium text-gray-900">John Doe</p>
-                            <p className="text-xs text-gray-500">Admin</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Header title="Dashboard" />
 
             {/* Scrollable Content */}
             <div className="flex-1 overflow-auto p-6">

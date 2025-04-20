@@ -13,6 +13,7 @@ import AIAgentPage from './pages/AIAgentPage';
 import Settings from './components/Settings';
 import Login from './components/Login';
 import Register from './components/Registration';
+import ChatPopup from './components/ChatPopup';
 
 const AppLayout = () => {
   const location = useLocation();
@@ -38,6 +39,7 @@ const AppLayout = () => {
           <Route path="/*" element={<Login />} />
         </Routes>
       </main>
+      <ChatPopup />
     </div>
   );
 };

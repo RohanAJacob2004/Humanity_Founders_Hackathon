@@ -3,6 +3,7 @@ import { Bell, User, Search, Filter, Pause, Edit, Trash2, ChevronRight, Eye, Pla
 import NewPromoters from "./NewPromoters";
 import NewLeads from "./NewLeads";
 import NewCampaignModal from "./NewCampaignModal";
+import Header from './Header';
 
 const Campaigns = () => {
     const [activeTab, setActiveTab] = useState("pastPromoters");
@@ -169,66 +170,7 @@ const Campaigns = () => {
 
     return (
         <div className="flex flex-col h-full">
-            {/* Sticky Header */}
-            <div className="sticky top-0 z-10 bg-white border-b border-[#E5E5E5]">
-                <div className="h-16 flex items-center justify-between px-6">
-                    {/* Left side - Campaigns */}
-                    <div className="flex items-center">
-                        <h1 className="text-lg font-medium text-gray-900">Campaigns</h1>
-                    </div>
-
-                    {/* Right side - Profile */}
-                    <div className="flex items-center space-x-6">
-                        {/* Notifications */}
-                        <div className="relative">
-                            <Bell className="text-gray-500 text-xl cursor-pointer" />
-                            <div className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></div>
-                        </div>
-
-                        {/* User Profile */}
-                        <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                                <User className="text-gray-500" />
-                            </div>
-                            <div>
-                                <p className="text-sm font-medium text-gray-900">John Doe</p>
-                                <p className="text-xs text-gray-500">Admin</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Tabs */}
-                <div className="flex border-b border-gray-200">
-                    <button
-                        className={`px-6 py-3 text-sm font-medium ${activeTab === "pastPromoters"
-                            ? "text-[#3159FF] border-b-2 border-[#3159FF]"
-                            : "text-gray-500 hover:text-gray-700"
-                            }`}
-                        onClick={() => setActiveTab("pastPromoters")}
-                    >
-                        Past Promoters
-                    </button>
-                    <button
-                        className={`px-6 py-3 text-sm font-medium ${activeTab === "newPromoters"
-                            ? "text-[#3159FF] border-b-2 border-[#3159FF]"
-                            : "text-gray-500 hover:text-gray-700"
-                            }`}
-                        onClick={() => setActiveTab("newPromoters")}
-                    >
-                        New Promoters
-                    </button>
-                    <button
-                        className={`px-6 py-3 text-sm font-medium ${activeTab === "newLeads"
-                            ? "text-[#3159FF] border-b-2 border-[#3159FF]"
-                            : "text-gray-500 hover:text-gray-700"
-                            }`}
-                        onClick={() => setActiveTab("newLeads")}
-                    >
-                        New Leads
-                    </button>
-                </div>
-            </div>
+            <Header title="Campaigns" />
 
             {/* Content */}
             {renderContent()}

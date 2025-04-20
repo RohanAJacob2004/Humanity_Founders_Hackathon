@@ -37,7 +37,7 @@ const Login = () => {
             }
 
             // Store the token in localStorage or sessionStorage based on rememberMe
-            const storage = rememberMe ? localStorage : sessionStorage;
+            const storage = localStorage
             storage.setItem('token', data.token);
             storage.setItem('email', JSON.stringify(data.userName));
 
@@ -55,8 +55,23 @@ const Login = () => {
     };
 
     return (
-        <div className="fixed inset-0 bg-[#F5F7FA] flex items-center justify-center">
-            <div className="bg-white rounded-2xl shadow-lg p-8 w-[695px]">
+        <div className="fixed inset-0 bg-[#F5F7FA] flex items-center justify-center overflow-hidden">
+            {/* Background Vectors */}
+            <div className="absolute inset-0 pointer-events-none z-0">
+                <img
+                    src="/Vector 15.png"
+                    alt="Background design top"
+                    className="relative"
+                />
+                <img
+                    src="/Vector 16.png"
+                    alt="Background design bottom"
+                    className="relative -mt-44"
+                />
+            </div>
+
+            {/* Login Form Container */}
+            <div className="bg-white rounded-2xl shadow-lg p-8 w-[480px] min-h-[690px] relative z-10">
                 <div className="text-center mb-8">
                     <h1 className="text-2xl font-semibold text-gray-700">Login to ReferralHub</h1>
                 </div>

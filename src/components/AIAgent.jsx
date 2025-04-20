@@ -1,7 +1,26 @@
 import React from 'react';
 import { Bell, User, Link, PlusCircle, Settings, Users, Send, RefreshCcw } from "lucide-react";
+import { useState, useEffect } from 'react';
 
 const AIAgent = () => {
+
+
+    const [userEmail, setUserEmail] = useState('');
+
+    useEffect(() => {
+        // Try to get email from localStorage first, then sessionStorage
+        const email = localStorage.getItem('email') || sessionStorage.getItem('email');
+        if (email) {
+            try {
+                // Remove quotes if the email was stored with JSON.stringify
+                const parsedEmail = JSON.parse(email);
+                setUserEmail(parsedEmail.split('@')[0]);
+            } catch {
+                setUserEmail(email);
+            }
+        }
+    }, []);
+
     return (
         <div className="flex flex-col h-screen w-full">
             {/* Sticky Header */}
@@ -25,8 +44,7 @@ const AIAgent = () => {
                             <User className="text-gray-500" />
                         </div>
                         <div>
-                            <p className="text-sm font-medium text-gray-900">John Doe</p>
-                            <p className="text-xs text-gray-500">Admin</p>
+                            <p className="text-sm font-medium text-gray-900">{userEmail}</p>
                         </div>
                     </div>
                 </div>

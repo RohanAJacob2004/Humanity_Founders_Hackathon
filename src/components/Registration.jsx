@@ -59,8 +59,23 @@ const Registration = () => {
     };
 
     return (
-        <div className="fixed inset-0 bg-[#F5F7FA] flex items-center justify-center p-4">
-            <div className="w-full max-w-[695px] bg-white rounded-[20px] p-8 shadow-lg">
+        <div className="fixed inset-0 bg-[#F5F7FA] flex items-center justify-start p-4 overflow-hidden">
+            {/* Background Vectors */}
+            <div className="absolute inset-0 pointer-events-none z-0">
+                <img
+                    src="/Vector 15.png"
+                    alt="Background design top"
+                    className="relative"
+                />
+                <img
+                    src="/Vector 16.png"
+                    alt="Background design bottom"
+                    className="relative -mt-48"
+                />
+            </div>
+
+            {/* Registration Form Container - keeping original dimensions */}
+            <div className="w-full max-w-[695px] bg-white rounded-[20px] p-8 shadow-lg relative z-10 ml-16">
                 <h1 className="text-2xl font-semibold text-gray-700 text-center mb-8">
                     Register for ReferralHub
                 </h1>
@@ -164,7 +179,7 @@ const Registration = () => {
             </div>
 
             {/* Chatbot Icon */}
-            <div className="fixed bottom-8 right-8">
+            <div className="fixed bottom-8 right-8 z-20">
                 <button className="w-15 h-15 bg-white rounded-full shadow-lg p-4 hover:bg-gray-50 transition-colors">
                     <FaRobot className="text-gray-600" />
                 </button>
