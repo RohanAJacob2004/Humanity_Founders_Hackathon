@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FaGoogle, FaFacebook, FaTwitter, FaLinkedin, FaEye, FaEyeSlash, FaRobot } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
+import { FaGoogle, FaFacebook, FaTwitter, FaLinkedin, FaEye, FaEyeSlash, FaRobot, FaSpinner } from 'react-icons/fa';
 
 const Registration = () => {
 
@@ -13,6 +13,8 @@ const Registration = () => {
     });
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -29,6 +31,8 @@ const Registration = () => {
             alert("Passwords do not match.");
             return;
         }
+
+        setIsLoading(true);
 
         try {
             const requestBody = {
@@ -52,9 +56,12 @@ const Registration = () => {
             const data = await res.json();
             alert('Registration successful!');
             setFormData({ email: '', password: '', confirmPassword: '' });
+            navigate('/login');
         } catch (error) {
             console.error('Registration error:', error);
             alert(error.message || 'An error occurred during registration');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -141,9 +148,16 @@ const Registration = () => {
                     {/* Sign Up Button */}
                     <button
                         type="submit"
-                        className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
+                        disabled={isLoading}
+                        className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        Sign Up
+                        {isLoading ? (
+                            <span className="flex items-center justify-center">
+                                <FaSpinner className="animate-spin mr-2" /> Signing Up...
+                            </span>
+                        ) : (
+                            'Sign Up'
+                        )}
                     </button>
 
                     {/* Divider */}
