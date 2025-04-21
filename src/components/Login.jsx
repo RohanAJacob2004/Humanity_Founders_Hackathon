@@ -44,7 +44,7 @@ const Login = () => {
             // Reset form and redirect to dashboard
             setEmail('');
             setPassword('');
-            navigate('/dashboard');
+            navigate('/business-profile-setup');
 
         } catch (err) {
             setError(err.message || 'An error occurred during login');
