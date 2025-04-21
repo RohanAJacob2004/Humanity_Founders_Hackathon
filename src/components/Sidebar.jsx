@@ -39,10 +39,10 @@ const Sidebar = () => {
     };
 
     return (
-        <div className={`${isExpanded ? 'w-[245px]' : 'w-[80px]'} h-screen bg-white border-r border-[#E5E5E5] flex flex-col transition-all duration-300`}>
+        <div className={`sidebar ${isExpanded ? 'w-[245px]' : 'w-[80px]'} h-screen bg-white border-r border-[#E5E5E5] flex flex-col transition-all duration-300`}>
             {/* Logo and Toggle */}
             <div className="p-6 flex items-center justify-between">
-                {isExpanded && <h1 className="text-2xl font-bold text-black">Referral Hub</h1>}
+                {isExpanded && <img src="/referralHub.png" alt="logo" className="object-contain h-20 w-20" />}
                 <button
                     onClick={() => setIsExpanded(!isExpanded)}
                     className="text-gray-500 hover:text-gray-700"
@@ -55,6 +55,7 @@ const Sidebar = () => {
             <div className="flex-1 px-4 py-2">
                 {menuItems.map((item, index) => (
                     <div
+                        data-tour-id={item.path}
                         key={index}
                         onClick={() => handleNavigation(item.path)}
                         className={`flex items-center px-4 py-3 rounded-lg mb-2 cursor-pointer duration-200
@@ -74,6 +75,7 @@ const Sidebar = () => {
             <div className="px-4 py-4 border-t border-[#E5E5E5]">
                 {bottomMenuItems.map((item, index) => (
                     <div
+                        data-tour-id={item.path}
                         key={index}
                         onClick={() => handleNavigation(item.path)}
                         className={`flex items-center px-4 py-3 rounded-lg mb-2 cursor-pointer

@@ -31,14 +31,18 @@ import {
 } from "./ui/table";
 import Header from './Header';
 
+
+
+
 const HeaderSection = () => {
-    // Data for metric cards
+
+
     const metricCards = [
         {
             title: "Total Customers",
             value: "8",
             change: "+12%",
-            isPositive: true,
+            isPositive: "true",
             iconBgColor: "bg-[#e0e3dd]",
             icon: <UsersIcon className="h-6 w-6" />,
         },
@@ -46,7 +50,7 @@ const HeaderSection = () => {
             title: "New Customers",
             value: "94",
             change: "+8%",
-            isPositive: true,
+            isPositive: "false",
             iconBgColor: "bg-[#ffd2bf]",
             icon: <UsersIcon className="h-6 w-6" />,
         },
@@ -54,7 +58,7 @@ const HeaderSection = () => {
             title: "Average Conversion rate",
             value: "64%",
             change: "-3%",
-            isPositive: false,
+            isPositive: "false",
             iconBgColor: "bg-[#ffc8e1]",
             icon: <PercentIcon className="h-6 w-6" />,
         },
@@ -62,15 +66,17 @@ const HeaderSection = () => {
             title: "Total Revenue Generated",
             value: "$23,900",
             change: "+15%",
-            isPositive: true,
+            isPositive: "false",
             iconBgColor: "bg-[#d7f0ff]",
             icon: <DollarSignIcon className="h-6 w-6" />,
         },
     ];
 
+
+
     return (
         <Card className="flex w-full h-28 items-start gap-[29.5px] p-5 bg-white rounded-[10px]">
-            <CardContent className="flex items-start gap-[29.5px] p-0 w-full">
+            <CardContent className="flex items-start gap-14 p-0 w-full">
                 {metricCards.map((card, index) => (
                     <React.Fragment key={index}>
                         {index > 0 && (
@@ -125,6 +131,8 @@ const HeaderSection = () => {
 export const PromoterListSection = () => {
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
     const navigate = useNavigate();
+
+
 
     // Sample data for promoters
     const promoters = [
@@ -217,6 +225,20 @@ export const PromoterListSection = () => {
             selected: false,
         },
     ];
+
+    const [selectedPromoters, setSelectedPromoters] = useState(() =>
+        promoters
+            .filter(promoter => promoter.selected)
+            .map(promoter => promoter.id)
+    );
+
+    const handleCheckboxClick = (id) => {
+        setSelectedPromoters(prev =>
+            prev.includes(id)
+                ? prev.filter(pid => pid !== id)
+                : [...prev, id]
+        );
+    };
 
     // Function to get badge color based on status
     const getStatusBadgeClass = (status) => {
@@ -321,7 +343,7 @@ export const PromoterListSection = () => {
                                         {promoters.map((promoter) => (
                                             <TableRow key={promoter.id} className="border-b-0 relative">
                                                 <TableCell className="py-3">
-                                                    <Checkbox checked={promoter.selected} />
+                                                    <Checkbox onClick={() => handleCheckboxClick(promoter.id)} checked={selectedPromoters.includes(promoter.id)} />
                                                 </TableCell>
                                                 <TableCell className="py-3 font-normal text-sm text-[#636363]">
                                                     {promoter.name}

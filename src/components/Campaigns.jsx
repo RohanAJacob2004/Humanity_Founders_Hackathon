@@ -119,7 +119,7 @@ const Campaigns = () => {
                                     <div className="bg-gradient-to-r from-[#E8F0FF] to-[#F6F9FF] border border-[#D7E5FF] rounded-lg p-4 mb-6">
                                         <div className="flex items-start gap-3">
                                             <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
-                                                <img src="/ai-icon.png" alt="AI" className="w-4 h-4" />
+                                                <img src="/chatbot.png" alt="AI" className="w-6 h-6" />
                                             </div>
                                             <p className="text-gray-600">{campaign.suggestion}</p>
                                         </div>
@@ -172,8 +172,41 @@ const Campaigns = () => {
         <div className="flex flex-col h-full">
             <Header title="Campaigns" />
 
+            {/* Main Tabs navigation */}
+            <div className="flex border-b border-gray-200">
+                <button
+                    className={`flex-1 px-6 py-3 text-sm font-medium ${activeTab === "pastPromoters"
+                        ? "text-[#3159FF] border-b-2 border-[#3159FF] bg-[#3159FF]/10"
+                        : "text-gray-500 hover:text-gray-700"
+                        }`}
+                    onClick={() => setActiveTab("pastPromoters")}
+                >
+                    Past Promoters
+                </button>
+                <button
+                    className={`flex-1 px-6 py-3 text-sm font-medium ${activeTab === "newPromoters"
+                        ? "text-[#3159FF] border-b-2 border-[#3159FF] bg-[#3159FF]/10"
+                        : "text-gray-500 hover:text-gray-700"
+                        }`}
+                    onClick={() => setActiveTab("newPromoters")}
+                >
+                    New Promoters
+                </button>
+                <button
+                    className={`flex-1 px-6 py-3 text-sm font-medium ${activeTab === "newLeads"
+                        ? "text-[#3159FF] border-b-2 border-[#3159FF] bg-[#3159FF]/10"
+                        : "text-gray-500 hover:text-gray-700"
+                        }`}
+                    onClick={() => setActiveTab("newLeads")}
+                >
+                    New Leads
+                </button>
+            </div>
+
             {/* Content */}
-            {renderContent()}
+            <div className="flex-1 overflow-auto p-6">
+                {renderContent()}
+            </div>
 
             {/* Modal */}
             <NewCampaignModal

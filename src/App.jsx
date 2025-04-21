@@ -14,10 +14,11 @@ import Settings from './components/Settings';
 import Login from './components/Login';
 import Register from './components/Registration';
 import ChatPopup from './components/ChatPopup';
+import PopupTutorial from './components/PopupTutorial';
 
 const AppLayout = () => {
   const location = useLocation();
-  const isAuthPage = ['/login', '/register'].includes(location.pathname);
+  const isAuthPage = ['/login', '/register', '/'].includes(location.pathname);
 
   return (
     <div className="flex h-screen bg-[#F5F5F5]">
@@ -39,7 +40,8 @@ const AppLayout = () => {
           <Route path="/*" element={<Login />} />
         </Routes>
       </main>
-      <ChatPopup />
+      {!isAuthPage && <ChatPopup />}
+      {!isAuthPage && <PopupTutorial />}
     </div>
   );
 };
