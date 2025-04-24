@@ -317,8 +317,8 @@ const Payout = () => {
                             <User className="text-gray-500" />
                         </div>
                         <div>
-                            <p className="text-sm font-medium text-gray-900">John Doe</p>
-                            <p className="text-xs text-gray-500">Admin</p>
+                            <p className="text-sm font-medium text-gray-900">{JSON.parse(localStorage.getItem('email')).split('@')[0]}</p>
+                            
                         </div>
                     </div>
                 </div>

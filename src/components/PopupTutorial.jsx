@@ -30,6 +30,7 @@ const PopupTutorial = () => {
             prevEl.style.boxShadow = '';
             prevEl.style.position = '';
             prevEl.style.zIndex = '';
+            prevEl.style.backgroundColor = '';
         }
         if (!isVisible) return;
         // Highlight current target element
@@ -40,6 +41,7 @@ const PopupTutorial = () => {
             el.style.boxShadow = '0 0 0 4px rgba(49,89,255,0.5)';
             el.style.position = 'relative';
             el.style.zIndex = '51';
+            el.style.backgroundColor = 'white';
         }
     }, [currentStep, isVisible]);
 
@@ -71,6 +73,7 @@ const PopupTutorial = () => {
     const top = rect.top + rect.height / 2 - popupHeight / 2;
     return (
         <div className="fixed inset-0 z-50 pointer-events-none">
+            <div className="absolute inset-0 bg-black opacity-50"></div>
             <div
                 className="absolute pointer-events-auto"
                 style={{ top: `${top}px`, left: `${rect.right + margin - 60}px` }}
