@@ -83,6 +83,38 @@ const Login = () => {
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Magic Link Login Section */}
+                    <div className="space-y-4">
+
+                        <div className="space-y-2">
+                            <label className="block text-sm font-medium text-gray-700">
+                                Magic Link Login
+                            </label>
+
+                        </div>
+                        <input
+                            type="email"
+                            placeholder="Enter your email"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            disabled={isLoading}
+                        />
+                    </div>
+                    <button
+                        type="button"
+                        className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-300 text-white rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                        disabled={isLoading}
+                    >
+                        Send Magic Link
+                    </button>
+                    {/* Divider */}
+                    <div className="relative">
+                        <div className="absolute inset-0 flex items-center">
+                            <div className="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div className="relative flex justify-center text-sm">
+                            <span className="px-2 bg-white text-gray-500">or</span>
+                        </div>
+                    </div>
                     {/* Email Input */}
                     <div className="space-y-2">
                         <label className="block text-sm font-medium text-gray-700 text-left">Email</label>
@@ -121,7 +153,7 @@ const Login = () => {
                         </div>
                     </div>
 
-                    {/* Remember Me and Forgot Password */}
+
                     <div className="flex justify-between items-center">
                         <div className="flex items-center">
                             <input
@@ -136,6 +168,8 @@ const Login = () => {
                                 Remember Me
                             </label>
                         </div>
+
+
                         <a href="#" className="text-sm text-blue-600 hover:text-blue-500">
                             Forgot password?
                         </a>

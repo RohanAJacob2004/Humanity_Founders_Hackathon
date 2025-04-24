@@ -99,16 +99,16 @@ const AIAgent = () => {
     };
 
     const handleReset = () => {
-         // Reset messages, keeping the initial welcome message
-         const displayEmail = userEmail || 'User'; // Use current state or default
-         setMessages([
-             {
-                 type: 'assistant',
-                 content: `Welcome Back, ${displayEmail}!\nHow can I help you today?`
-             }
-         ]);
-         setInput(''); // Clear input field as well
-         setLoading(false); // Ensure loading state is reset
+        // Reset messages, keeping the initial welcome message
+        const displayEmail = userEmail || 'User'; // Use current state or default
+        setMessages([
+            {
+                type: 'assistant',
+                content: `Welcome Back, ${displayEmail}!\nHow can I help you today?`
+            }
+        ]);
+        setInput(''); // Clear input field as well
+        setLoading(false); // Ensure loading state is reset
     }
 
     return (
@@ -135,8 +135,8 @@ const AIAgent = () => {
 
             {/* Main Content Area */}
             {/* Use flex-1 and overflow-hidden to manage layout */}
-            <div className="flex-1 flex flex-col overflow-hidden p-6 pt-0 mt-16"> {/* Added pt-0 */}
-                 {/* Inner container for chat content */}
+            <div className="flex-1 flex flex-col overflow-hidden p-6 pt-0 mt-4"> {/* Added pt-0 */}
+                {/* Inner container for chat content */}
                 <div className="flex-1 flex flex-col bg-white rounded-lg shadow-sm overflow-hidden"> {/* Added shadow */}
                     {/* AI Agent Header */}
                     <div className="flex justify-between items-center p-4 border-b border-gray-200"> {/* Adjusted padding */}
@@ -165,7 +165,7 @@ const AIAgent = () => {
                                         msg.type === 'user'
                                             ? 'bg-gray-100 border-gray-200' // Simplified user style
                                             : 'bg-gradient-to-r from-blue-50 to-purple-50 border-blue-100' // Simplified assistant style
-                                    }`}
+                                        }`}
                                 >
                                     {/* No need to split by \n if using whitespace-pre-wrap */}
                                     {msg.content}
@@ -179,12 +179,12 @@ const AIAgent = () => {
                         ))}
                         {/* Display loading indicator */}
                         {loading && (
-                             <div className="flex justify-start gap-2.5">
-                                 <img src="/chatbot.png" alt="AI" className="w-8 h-8 self-end mb-1" />
-                                 <div className="p-3 rounded-lg border border-blue-100 bg-gradient-to-r from-blue-50 to-purple-50 text-sm text-gray-500 italic">
+                            <div className="flex justify-start gap-2.5">
+                                <img src="/chatbot.png" alt="AI" className="w-8 h-8 self-end mb-1" />
+                                <div className="p-3 rounded-lg border border-blue-100 bg-gradient-to-r from-blue-50 to-purple-50 text-sm text-gray-500 italic">
                                     Typing...
-                                 </div>
-                             </div>
+                                </div>
+                            </div>
                         )}
                     </div>
 
@@ -192,27 +192,27 @@ const AIAgent = () => {
                     <div className="mt-auto border-t border-gray-200 p-4"> {/* Adjusted padding */}
                         {/* Quick Links (Optional - kept as is) */}
                         <div className="pb-4">
-                             <h3 className="text-[#1C1C1C] text-xs font-medium mb-3 text-gray-500 uppercase">Quick Actions</h3> {/* Style adjustments */}
-                             <div className="flex flex-wrap gap-2"> {/* Use flex-wrap and smaller gap */}
-                                 {/* Reduced padding and text size for smaller screens */}
-                                 <button className="flex items-center gap-2 px-3 py-1.5 border border-[#3159FF] rounded-md text-[#3159FF] hover:bg-blue-50 text-xs">
-                                     <Link className="w-4 h-4" />
-                                     <span>Send Referral</span>
-                                 </button>
-                                 <button className="flex items-center gap-2 px-3 py-1.5 border border-[#3159FF] rounded-md text-[#3159FF] hover:bg-blue-50 text-xs">
-                                     <PlusCircle className="w-4 h-4" />
-                                     <span>Create Campaign</span>
-                                 </button>
-                                 <button className="flex items-center gap-2 px-3 py-1.5 border border-[#3159FF] rounded-md text-[#3159FF] hover:bg-blue-50 text-xs">
-                                     <Settings className="w-4 h-4" />
-                                     <span>Follow-up</span> {/* Simplified text */}
-                                 </button>
-                                 <button className="flex items-center gap-2 px-3 py-1.5 border border-[#3159FF] rounded-md text-[#3159FF] hover:bg-blue-50 text-xs">
-                                     <Users className="w-4 h-4" />
-                                     <span>View Referral</span>
-                                 </button>
-                             </div>
-                         </div>
+                            <h3 className="text-[#1C1C1C] text-xs font-medium mb-3 text-gray-500 uppercase">Quick Actions</h3> {/* Style adjustments */}
+                            <div className="flex flex-wrap gap-2"> {/* Use flex-wrap and smaller gap */}
+                                {/* Reduced padding and text size for smaller screens */}
+                                <button className="flex items-center gap-2 px-3 py-1.5 border border-[#3159FF] rounded-md text-[#3159FF] hover:bg-blue-50 text-xs">
+                                    <Link className="w-4 h-4" />
+                                    <span>Send Referral</span>
+                                </button>
+                                <button className="flex items-center gap-2 px-3 py-1.5 border border-[#3159FF] rounded-md text-[#3159FF] hover:bg-blue-50 text-xs">
+                                    <PlusCircle className="w-4 h-4" />
+                                    <span>Create Campaign</span>
+                                </button>
+                                <button className="flex items-center gap-2 px-3 py-1.5 border border-[#3159FF] rounded-md text-[#3159FF] hover:bg-blue-50 text-xs">
+                                    <Settings className="w-4 h-4" />
+                                    <span>Follow-up</span> {/* Simplified text */}
+                                </button>
+                                <button className="flex items-center gap-2 px-3 py-1.5 border border-[#3159FF] rounded-md text-[#3159FF] hover:bg-blue-50 text-xs">
+                                    <Users className="w-4 h-4" />
+                                    <span>View Referral</span>
+                                </button>
+                            </div>
+                        </div>
 
                         {/* Chat Input */}
                         <div className="flex items-center gap-2 bg-gray-100 border border-gray-300 rounded-lg p-2"> {/* Adjusted styles */}
@@ -228,11 +228,10 @@ const AIAgent = () => {
                             <button
                                 onClick={handleSend}
                                 disabled={loading || !input.trim()} // Disable if loading or input is empty
-                                className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                                    loading || !input.trim()
+                                className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${loading || !input.trim()
                                         ? 'bg-gray-300 cursor-not-allowed'
                                         : 'bg-blue-100 hover:bg-blue-200' // Use blue shades
-                                }`}
+                                    }`}
                             >
                                 <Send className={`w-4 h-4 ${loading || !input.trim() ? 'text-gray-500' : 'text-[#3159FF]'}`} /> {/* Adjusted size and color */}
                             </button>

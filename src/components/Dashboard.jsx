@@ -307,11 +307,11 @@ const Dashboard = () => {
                                                     fill="none"
                                                     stroke={metric.color}
                                                     strokeWidth="10"
-                                                    strokeDasharray={`${metric.progressPercentage * 3.14}, 314`}
-                                                    strokeDashoffset={isVisible ? "0" : "314"}
+                                                    strokeDasharray={314}
+                                                    strokeDashoffset={isVisible ? 314 - (metric.progressPercentage * 3.14) : 314}
                                                     transform="rotate(-90, 55, 55)"
                                                     style={{
-                                                        transition: "stroke-dashoffset 2.5s ease-in-out",
+                                                        transition: "stroke-dashoffset 1.5s ease-in-out",
                                                         willChange: "stroke-dashoffset"
                                                     }}
                                                 />
@@ -445,7 +445,7 @@ const Dashboard = () => {
                                             r="60"
                                             fill="none"
                                             stroke="#EDEAFC"
-                                            strokeWidth="15"
+                                            strokeWidth="30"
                                         />
                                         <circle
                                             cx="75"
@@ -453,7 +453,7 @@ const Dashboard = () => {
                                             r="60"
                                             fill="none"
                                             stroke="url(#gradient)"
-                                            strokeWidth="15"
+                                            strokeWidth="30"
                                             strokeDasharray="377"
                                             strokeDashoffset={isVisible ? "188.4" : "377"}
                                             transform="rotate(-90, 75, 75)"

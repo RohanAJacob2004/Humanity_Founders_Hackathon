@@ -3,7 +3,7 @@ import AIAgent from "../components/AIAgent";
 
 export const AIAgentPage = () => {
     return (
-        <div className="p-6">
+        <div>
             <AIAgent />
         </div>
     );

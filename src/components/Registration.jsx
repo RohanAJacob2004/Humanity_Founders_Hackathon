@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaGoogle, FaFacebook, FaTwitter, FaLinkedin, FaEye, FaEyeSlash, FaRobot, FaSpinner } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
+import { FaFacebook, FaTwitter, FaLinkedin } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaRobot, FaSpinner } from 'react-icons/fa';
 
 const Registration = () => {
 
@@ -90,7 +92,7 @@ const Registration = () => {
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Email Input */}
                     <div className="space-y-2">
-                        <label className="block text-sm font-medium text-gray-700 text-left">Email Id</label>
+                        <label className="block text-sm font-medium text-gray-700 text-left">Email</label>
                         <input
                             type="email"
                             name="email"
@@ -169,17 +171,17 @@ const Registration = () => {
 
                     {/* Social Login Buttons */}
                     <div className="flex justify-center space-x-4">
-                        <button className="w-11 h-11 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
-                            <FaGoogle className="text-gray-600" />
+                        <button className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+                            <FcGoogle className="w-6 h-6" />
                         </button>
-                        <button className="w-11 h-11 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
-                            <FaFacebook className="text-gray-600" />
+                        <button className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+                            <FaFacebook className="w-6 h-6 text-blue-600" />
                         </button>
-                        <button className="w-11 h-11 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
-                            <FaTwitter className="text-gray-600" />
+                        <button className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+                            <FaTwitter className="w-6 h-6 text-blue-400" />
                         </button>
-                        <button className="w-11 h-11 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
-                            <FaLinkedin className="text-gray-600" />
+                        <button className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+                            <FaLinkedin className="w-6 h-6 text-blue-700" />
                         </button>
                     </div>
                 </form>
