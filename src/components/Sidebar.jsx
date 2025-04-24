@@ -61,7 +61,7 @@ const Sidebar = () => {
                         className={`flex items-center px-4 py-3 rounded-lg mb-2 cursor-pointer duration-200
                             ${location.pathname === item.path ? 'bg-[#3159FF]/10 text-[#3159FF]' : 'text-[#3159FF] hover:bg-gray-50'}`}
                     >
-                        <span className="text-xl mr-3">{item.label === "AI Agent" ? (<img src="/chatbot.png" alt="logo" className="object-contain h-8 w-8 -ml-1 " />) : item.icon}</span>
+                        <span className="text-xl mr-3">{item.label === "AI Agent" ? (<img src="/chatbot.png" alt="logo" className="object-cover h-8 w-8 -ml-1 " />) : item.icon}</span>
                         {isExpanded && (
                             <>
                                 <span className="text-sm font-medium">{item.label}</span>

@@ -16,6 +16,7 @@ import Register from './components/Registration';
 import ChatPopup from './components/ChatPopup';
 import PopupTutorial from './components/PopupTutorial';
 import Help from './components/Help';
+
 const AppLayout = () => {
   const location = useLocation();
   const isAuthPage = ['/login', '/register', '/'].includes(location.pathname);

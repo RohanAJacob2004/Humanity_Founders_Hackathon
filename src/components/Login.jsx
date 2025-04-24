@@ -18,8 +18,10 @@ const Login = () => {
         setError('');
         setIsLoading(true);
 
+
         try {
-            const response = await fetch('http://34.10.166.233/auth/login', {
+            
+            const response = await fetch('/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -27,7 +29,7 @@ const Login = () => {
                 body: JSON.stringify({
                     email,
                     password,
-                })
+                }),
             });
 
             const data = await response.json();
@@ -122,7 +124,7 @@ const Login = () => {
                         <input
                             type="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) =>  setEmail(e.target.value) }
                             placeholder="Enter your email"
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required

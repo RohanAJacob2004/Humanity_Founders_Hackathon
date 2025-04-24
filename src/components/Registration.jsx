@@ -44,7 +44,7 @@ const Registration = () => {
                 full_name: formData.email.split('@')[0],
             };
 
-            const res = await fetch('http://34.10.166.233/auth/register', {
+            const res = await fetch('/api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

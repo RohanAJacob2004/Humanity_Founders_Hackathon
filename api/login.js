@@ -1,21 +1,33 @@
-import clientPromise from './lib/mongodb.js';
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).end('Method Not Allowed');
+    return res.status(405).json({ message: 'Method Not Allowed' });
   }
 
-  const { email, password } = req.body;
+  try {
+    const body = req.body 
 
-  const client = await clientPromise;
-  const db = client.db('tve23cs118');
-  const users = db.collection('users');
+    const loginResponse = await fetch('http://34.10.166.233/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
 
-  const user = await users.findOne({ email });
+    const data = await loginResponse.text(); // try to get raw text in case it's not JSON
 
-  if (!user || user.password !== password) {
-    return res.status(401).json({ message: 'Invalid credentials' });
+    let parsed;
+    try {
+      parsed = JSON.parse(data);
+    } catch {
+      parsed = { message: data };
+    }
+
+    res.status(loginResponse.status).json(parsed);
+  } catch (err) {
+    console.error('Proxy login error:', err);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
-  const userName = user.email;
-  res.status(200).json({ token: 'fake-jwt-token', userName });
 }
+
+

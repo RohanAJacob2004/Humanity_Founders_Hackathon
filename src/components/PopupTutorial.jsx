@@ -21,6 +21,28 @@ const PopupTutorial = () => {
         }
     }, []);
 
+    // Highlight the sidebar option for the current tutorial step
+    useEffect(() => {
+        // Remove highlight from any previously highlighted element
+        const prevEl = document.querySelector('.tour-highlight');
+        if (prevEl) {
+            prevEl.classList.remove('tour-highlight');
+            prevEl.style.boxShadow = '';
+            prevEl.style.position = '';
+            prevEl.style.zIndex = '';
+        }
+        if (!isVisible) return;
+        // Highlight current target element
+        const id = steps[currentStep].id;
+        const el = document.querySelector(`[data-tour-id="${id}"]`);
+        if (el) {
+            el.classList.add('tour-highlight');
+            el.style.boxShadow = '0 0 0 4px rgba(49,89,255,0.5)';
+            el.style.position = 'relative';
+            el.style.zIndex = '51';
+        }
+    }, [currentStep, isVisible]);
+
     const nextStep = () => {
         if (currentStep < steps.length - 1) {
             setCurrentStep(prev => prev + 1);
