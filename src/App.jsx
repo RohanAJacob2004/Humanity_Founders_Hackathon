@@ -15,7 +15,7 @@ import Login from './components/Login';
 import Register from './components/Registration';
 import ChatPopup from './components/ChatPopup';
 import PopupTutorial from './components/PopupTutorial';
-
+import Help from './components/Help';
 const AppLayout = () => {
   const location = useLocation();
   const isAuthPage = ['/login', '/register', '/'].includes(location.pathname);
@@ -39,6 +39,7 @@ const AppLayout = () => {
           <Route path="/ai-agent" element={<AIAgentPage />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/*" element={<Login />} />
+          <Route path="/help" element={<Help />} />
         </Routes>
       </main>
       {!isAuthPage && !isAIAgentPage && <ChatPopup />}

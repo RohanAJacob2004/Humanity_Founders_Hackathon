@@ -51,7 +51,7 @@ const PopupTutorial = () => {
         <div className="fixed inset-0 z-50 pointer-events-none">
             <div
                 className="absolute pointer-events-auto"
-                style={{ top: `${top}px`, left: `${rect.right + margin-60}px` }}
+                style={{ top: `${top}px`, left: `${rect.right + margin - 60}px` }}
             >
                 <div className="w-[520px] h-[315px] bg-white rounded-[20px] shadow-[0_0_35px_rgba(219,219,219,0.5)] flex flex-col">
                     {/* Header */}

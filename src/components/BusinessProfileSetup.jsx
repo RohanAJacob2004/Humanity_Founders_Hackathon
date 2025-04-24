@@ -4,25 +4,29 @@ import { FaChevronDown, FaSearch, FaCheck, FaUpload, FaToggleOn } from 'react-ic
 import Header from './Header';
 
 const BusinessProfileSetup = () => {
-    const [currentStep, setCurrentStep] = useState(1);
-    const [completedSteps, setCompletedSteps] = useState([0]); // First step is completed by default
+    const [currentStep, setCurrentStep] = useState(0);
+    const [completedSteps, setCompletedSteps] = useState([]); // First step is completed by default
+    const [isLoading, setIsLoading] = useState(false);
 
     const [formData, setFormData] = useState({
-        businessName: '',
-        email: '',
-        phone: '',
+        business_name: '',
+        business_email: '',
+        business_phno: '',
         industry: '',
         services: '',
-        products: '',
-        companySize: '',
+        products: [],
+        company_size: '',
         city: '',
         state: '',
-        zipCode: '',
+        zip_code: '',
         businessDescription: '',
-        toneOfCommunication: '',
-        responseStyle: '',
-        autoOfferHelp: true,
-        userInitiatedOnly: false,
+        tone_of_communication: 'offline',
+        response_style: 'email',
+        auto_offer_help: true,
+        user_initiated_only: false,
+        platform_setup: true,
+        credit_balance: '30',
+        user: Math.floor(Math.random() * 1000),
         // Campaign related fields
         campaignName: '',
         rewardType: 'Points',
@@ -50,11 +54,28 @@ const BusinessProfileSetup = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
         // Mark current step as completed
         setCompletedSteps(prev => [...prev, currentStep]);
+        if (currentStep === 0) {
+            console.log(formData);
+            setIsLoading(true);
+
+            const res = await fetch('http://34.10.166.233/auth/create-business-owner', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                },
+                body: JSON.stringify(formData)
+            });
+            const data = await res.json();
+            if (res.ok) {
+                alert('Business profile setup completed successfully');
+                setIsLoading(false);
+            }
+        }
         // Move to next step if available
         if (currentStep < setupSteps.length - 1) {
             setCurrentStep(prev => prev + 1);
@@ -69,8 +90,8 @@ const BusinessProfileSetup = () => {
     };
 
     const setupSteps = [
-        { id: 1, title: 'Set Up Business Profile', status: 'completed' },
-        { id: 2, title: 'Sync Your Customer Data', status: 'current' },
+        { id: 1, title: 'Set Up Business Profile', status: 'current' },
+        { id: 2, title: 'Sync Your Customer Data', status: 'pending' },
         { id: 3, title: 'Set Up AI Agent Rules', status: 'pending' },
         { id: 4, title: 'Set Up Campaign', status: 'pending' },
         { id: 5, title: 'Set Up Leads', status: 'pending' }
@@ -112,10 +133,10 @@ const BusinessProfileSetup = () => {
                                     </label>
                                     <input
                                         type="text"
-                                        name="businessName"
+                                        name="business_name"
                                         className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         placeholder="Enter business name"
-                                        value={formData.businessName}
+                                        value={formData.business_name}
                                         onChange={handleChange}
                                     />
                                 </div>
@@ -126,10 +147,10 @@ const BusinessProfileSetup = () => {
                                     </label>
                                     <input
                                         type="email"
-                                        name="email"
+                                        name="business_email"
                                         className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         placeholder="Enter business email"
-                                        value={formData.email}
+                                        value={formData.business_email}
                                         onChange={handleChange}
                                     />
                                 </div>
@@ -140,10 +161,10 @@ const BusinessProfileSetup = () => {
                                     </label>
                                     <input
                                         type="tel"
-                                        name="phone"
+                                        name="business_phno"
                                         className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         placeholder="Enter phone number"
-                                        value={formData.phone}
+                                        value={formData.business_phno}
                                         onChange={handleChange}
                                     />
                                 </div>
@@ -200,9 +221,9 @@ const BusinessProfileSetup = () => {
                                             onChange={handleChange}
                                         >
                                             <option value="">Select products</option>
-                                            <option value="software">Software</option>
-                                            <option value="hardware">Hardware</option>
-                                            <option value="services">Services</option>
+                                            <option value={["software"]}>Software</option>
+                                            <option value={["hardware"]}>Hardware</option>
+                                            <option value={["services"]}>Services</option>
                                         </select>
                                         <FaChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
                                     </div>
@@ -214,9 +235,9 @@ const BusinessProfileSetup = () => {
                                     </label>
                                     <div className="relative">
                                         <select
-                                            name="companySize"
+                                            name="company_size"
                                             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none"
-                                            value={formData.companySize}
+                                            value={formData.company_size}
                                             onChange={handleChange}
                                         >
                                             <option value="">Select size</option>
@@ -269,10 +290,10 @@ const BusinessProfileSetup = () => {
                                     </label>
                                     <input
                                         type="text"
-                                        name="zipCode"
+                                        name="zip_code"
                                         className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         placeholder="Enter ZIP code"
-                                        value={formData.zipCode}
+                                        value={formData.zip_code}
                                         onChange={handleChange}
                                     />
                                 </div>
@@ -297,7 +318,7 @@ const BusinessProfileSetup = () => {
                                 type="submit"
                                 className="w-full py-3 px-4 bg-gradient-to-r from-[#3159FF] to-[#B5D1FF] text-white rounded-lg hover:opacity-90 transition-opacity"
                             >
-                                Save & Continue
+                                {isLoading ? "Saving..." : "Save & Continue"}
                             </button>
                         </form>
                     </div>

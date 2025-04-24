@@ -192,7 +192,7 @@ const AIAgent = () => {
                     <div className="mt-auto border-t border-gray-200 p-4"> {/* Adjusted padding */}
                         {/* Quick Links (Optional - kept as is) */}
                         <div className="pb-4">
-                            <h3 className="text-[#1C1C1C] text-xs font-medium mb-3 text-gray-500 uppercase">Quick Actions</h3> {/* Style adjustments */}
+                            <h3 className=" text-xs font-medium mb-3 text-gray-500 uppercase">Quick Actions</h3> {/* Style adjustments */}
                             <div className="flex flex-wrap gap-2"> {/* Use flex-wrap and smaller gap */}
                                 {/* Reduced padding and text size for smaller screens */}
                                 <button className="flex items-center gap-2 px-3 py-1.5 border border-[#3159FF] rounded-md text-[#3159FF] hover:bg-blue-50 text-xs">

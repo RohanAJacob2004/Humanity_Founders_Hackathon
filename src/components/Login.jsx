@@ -19,7 +19,7 @@ const Login = () => {
         setIsLoading(true);
 
         try {
-            const response = await fetch('/api/login', {
+            const response = await fetch('http://34.10.166.233/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -38,8 +38,9 @@ const Login = () => {
 
             // Store the token in localStorage or sessionStorage based on rememberMe
             const storage = localStorage
-            storage.setItem('token', data.token);
-            storage.setItem('email', JSON.stringify(data.userName));
+            storage.setItem('email', JSON.stringify(email.split('@')[0]));
+            storage.setItem('access_token', data.access);
+            storage.setItem('refresh_token', data.refresh);
 
             // Reset form and redirect to dashboard
             setEmail('');

@@ -39,10 +39,12 @@ const Registration = () => {
         try {
             const requestBody = {
                 email: formData.email,
-                password: formData.password
+                password: formData.password,
+                role: "BusinessOwner",
+                full_name: formData.email.split('@')[0],
             };
 
-            const res = await fetch('/api/register', {
+            const res = await fetch('http://34.10.166.233/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
