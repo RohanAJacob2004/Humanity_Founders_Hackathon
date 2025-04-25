@@ -56,31 +56,43 @@ const BusinessProfileSetup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         // Mark current step as completed
         setCompletedSteps(prev => [...prev, currentStep]);
+
         if (currentStep === 0) {
             console.log(formData);
             setIsLoading(true);
 
-            const res = await fetch('http://34.10.166.233/auth/create-business-owner', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-                },
-                body: JSON.stringify(formData)
-            });
-            const data = await res.json();
-            if (res.ok) {
-                alert('Business profile setup completed successfully');
+            try {
+                const res = await fetch('/api/createBusinessOwner', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await res.json();
+
+                if (res.status === 201) {
+                    alert('Business profile setup completed successfully');
+                    setIsLoading(false);
+                    setCurrentStep(prev => prev + 1);
+                } else {
+                    console.error('API error:', data);
+                    setIsLoading(false);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
                 setIsLoading(false);
             }
-        }
-        // Move to next step if available
-        if (currentStep < setupSteps.length - 1) {
+        } else if (currentStep < setupSteps.length - 1) {
             setCurrentStep(prev => prev + 1);
         }
     };
+
 
     const handleStepClick = (index) => {
         // Only allow clicking on completed steps or the next available step

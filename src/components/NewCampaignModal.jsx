@@ -1,14 +1,60 @@
 import React, { useState } from "react";
 import { X, Target, Info } from "lucide-react";
 import followupleads from "../../public/followupleads.png";
+import { useNavigate } from 'react-router-dom';
 
 const NewCampaignModal = ({ isOpen, onClose }) => {
+    const navigate = useNavigate();
     const [campaignName, setCampaignName] = useState("");
     const [description, setDescription] = useState("");
-    const [rewardType, setRewardType] = useState("points");
-    const [rewardValue, setRewardValue] = useState("200");
+    const [rewardValue, setRewardValue] = useState(Math.floor(Math.random() * 1000));
+    const [startDate, setStartDate] = useState(new Date());
+    const [leadRewardDiscount, setLeadRewardDiscount] = useState(Math.floor(Math.random() * 100));
+    const [endDate, setEndDate] = useState(new Date());
+    const [isLoading, setIsLoading] = useState(false);
 
     if (!isOpen) return null;
+
+    const handleCreateCampaign = async () => {
+        console.log("handleCreateCampaign called");
+        setIsLoading(true);
+        const token = localStorage.getItem('access_token');
+        const response = await fetch('/api/newCampaign', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({ campaign_name: campaignName, campaign_description: description, promoter_reward_points: rewardValue, campaign_start_date: startDate, campaign_end_date: endDate, lead_reward_discount: leadRewardDiscount, target_promoter_type: "all" }),
+        });
+
+        if (response.status === 201) {
+            alert('Campaign created successfully');
+            setIsLoading(false);
+            onClose();
+            window.location.reload();
+        } else if (response.status === 401) {
+            const refreshToken = localStorage.getItem('refresh_token');
+            const refreshResponse = await fetch('/api/refreshToken', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ refresh: refreshToken }),
+            });
+            if (refreshResponse.status === 200) {
+                const refreshData = await refreshResponse.json();
+                localStorage.setItem('access_token', refreshData.access);
+                return handleCreateCampaign();
+            } else {
+                console.error('Failed to refresh token');
+                return;
+            }
+        } else {
+            console.error('Failed to create campaign');
+            return;
+        }
+    };
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -54,6 +100,50 @@ const NewCampaignModal = ({ isOpen, onClose }) => {
                             className="w-full h-32 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        {/* Start Date */}
+                        <div className="space-y-2">
+                            <div className="flex items-center gap-1.5">
+                                <label className="text-sm font-medium text-gray-800">
+                                    Start Date <span className="text-red-500">*</span>
+                                </label>
+                                <div className="relative group">
+                                    <Info className="w-4 h-4 text-gray-400 group-hover:text-gray-600 cursor-pointer" />
+                                    <div className="absolute z-10 hidden group-hover:block bg-white border border-gray-200 text-xs text-gray-700 px-2 py-1 rounded shadow-md -top-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+                                        The campaign start date.
+                                    </div>
+                                </div>
+                            </div>
+                            <input
+                                type="date"
+                                value={startDate}
+                                onChange={(e) => setStartDate(e.target.value)}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-gray-800 shadow-sm"
+                            />
+                        </div>
+
+                        {/* End Date */}
+                        <div className="space-y-2">
+                            <div className="flex items-center gap-1.5">
+                                <label className="text-sm font-medium text-gray-800">
+                                    End Date <span className="text-red-500">*</span>
+                                </label>
+                                <div className="relative group">
+                                    <Info className="w-4 h-4 text-gray-400 group-hover:text-gray-600 cursor-pointer" />
+                                    <div className="absolute z-10 hidden group-hover:block bg-white border border-gray-200 text-xs text-gray-700 px-2 py-1 rounded shadow-md -top-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+                                        The campaign end date.
+                                    </div>
+                                </div>
+                            </div>
+                            <input
+                                type="date"
+                                value={endDate}
+                                onChange={(e) => setEndDate(e.target.value)}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-gray-800 shadow-sm"
+                            />
+                        </div>
+                    </div>
+
 
                     {/* Reward Type and Value */}
                     <div className="space-y-2 mb-6">
@@ -139,9 +229,11 @@ const NewCampaignModal = ({ isOpen, onClose }) => {
                         Cancel
                     </button>
                     <button
-                        className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+                        className={`px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        onClick={handleCreateCampaign}
+                        disabled={isLoading}
                     >
-                        Create Campaign
+                        {isLoading ? 'Creating...' : 'Create Campaign'}
                     </button>
                 </div>
             </div>

@@ -133,8 +133,9 @@ export const PromoterListSection = () => {
     const navigate = useNavigate();
 
 
+    
+    
 
-    // Sample data for promoters
     const promoters = [
         {
             id: 1,
