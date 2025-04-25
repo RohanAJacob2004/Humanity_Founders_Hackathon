@@ -80,6 +80,10 @@ const BusinessProfileSetup = () => {
                     alert('Business profile setup completed successfully');
                     setIsLoading(false);
                     setCurrentStep(prev => prev + 1);
+                } else if (res.status === 400) {
+                    alert('Business profile already exists');
+                    setIsLoading(false);
+                    setCurrentStep(prev => prev + 1);
                 } else {
                     console.error('API error:', data);
                     setIsLoading(false);
