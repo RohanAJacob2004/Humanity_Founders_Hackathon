@@ -262,7 +262,7 @@ const Dashboard = () => {
                 </Card>
 
                 {/* Performance Metrics */}
-                <div className="flex flex-wrap gap-24 w-full">
+                <div className="flex flex-wrap gap-12 w-full">
                     {metricsData.map((metric, index) => (
                         <Card
                             key={index}

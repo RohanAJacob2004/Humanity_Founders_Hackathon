@@ -18,9 +18,7 @@ const Login = () => {
         setError('');
         setIsLoading(true);
 
-
         try {
-            
             const response = await fetch('/api/login', {
                 method: 'POST',
                 headers: {
@@ -58,25 +56,25 @@ const Login = () => {
     };
 
     return (
-        <div className="fixed inset-0 bg-[#F5F7FA] flex items-center justify-center overflow-hidden">
+        <div className="min-h-screen h-full bg-[#F5F7FA] flex items-start justify-center overflow-y-auto py-8">
             {/* Background Vectors */}
-            <div className="absolute inset-0 pointer-events-none z-0">
+            <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
                 <img
                     src="/Vector 15.png"
                     alt="Background design top"
-                    className="relative"
+                    className="relative w-full"
                 />
                 <img
                     src="/Vector 16.png"
                     alt="Background design bottom"
-                    className="relative -mt-44"
+                    className="relative -mt-44 w-full"
                 />
             </div>
 
             {/* Login Form Container */}
-            <div className="bg-white rounded-2xl shadow-lg p-8 w-[480px] min-h-[690px] relative z-10">
-                <div className="text-center mb-8">
-                    <h1 className="text-2xl font-semibold text-gray-700">Login to ReferralHub</h1>
+            <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 w-full max-w-[480px] relative z-10 mx-4 my-2 ">
+                <div className="text-center mb-6">
+                    <h1 className="text-xl md:text-2xl font-semibold text-gray-700">Login to ReferralHub</h1>
                 </div>
 
                 {error && (
@@ -85,32 +83,31 @@ const Login = () => {
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                     {/* Magic Link Login Section */}
-                    <div className="space-y-4">
-
-                        <div className="space-y-2">
+                    <div className="space-y-2 md:space-y-4">
+                        <div className="space-y-1 md:space-y-2">
                             <label className="block text-sm font-medium text-gray-700">
                                 Magic Link Login
                             </label>
-
                         </div>
                         <input
                             type="email"
                             placeholder="Enter your email"
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             disabled={isLoading}
                         />
                     </div>
                     <button
                         type="button"
-                        className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-300 text-white rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                        className="w-full py-2 md:py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-300 text-white rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
                         disabled={isLoading}
                     >
                         Send Magic Link
                     </button>
+                    
                     {/* Divider */}
-                    <div className="relative">
+                    <div className="relative py-1">
                         <div className="absolute inset-0 flex items-center">
                             <div className="w-full border-t border-gray-300"></div>
                         </div>
@@ -118,22 +115,23 @@ const Login = () => {
                             <span className="px-2 bg-white text-gray-500">or</span>
                         </div>
                     </div>
+                    
                     {/* Email Input */}
-                    <div className="space-y-2">
+                    <div className="space-y-1 md:space-y-2">
                         <label className="block text-sm font-medium text-gray-700 text-left">Email</label>
                         <input
                             type="email"
                             value={email}
-                            onChange={(e) =>  setEmail(e.target.value) }
+                            onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter your email"
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                             disabled={isLoading}
                         />
                     </div>
 
                     {/* Password Input */}
-                    <div className="space-y-2">
+                    <div className="space-y-1 md:space-y-2">
                         <label className="block text-sm font-medium text-gray-700 text-left">Password</label>
                         <div className="relative">
                             <input
@@ -141,7 +139,7 @@ const Login = () => {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="Enter your password"
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
                                 disabled={isLoading}
                             />
@@ -156,8 +154,7 @@ const Login = () => {
                         </div>
                     </div>
 
-
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center text-sm">
                         <div className="flex items-center">
                             <input
                                 type="checkbox"
@@ -172,7 +169,6 @@ const Login = () => {
                             </label>
                         </div>
 
-
                         <a href="#" className="text-sm text-blue-600 hover:text-blue-500">
                             Forgot password?
                         </a>
@@ -181,14 +177,14 @@ const Login = () => {
                     {/* Login Button */}
                     <button
                         type="submit"
-                        className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-300 text-white rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                        className="w-full py-2 md:py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-300 text-white rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
                         disabled={isLoading}
                     >
                         {isLoading ? 'Signing in...' : 'Sign In'}
                     </button>
 
                     {/* Divider */}
-                    <div className="relative">
+                    <div className="relative py-1">
                         <div className="absolute inset-0 flex items-center">
                             <div className="w-full border-t border-gray-300"></div>
                         </div>
@@ -198,23 +194,23 @@ const Login = () => {
                     </div>
 
                     {/* Social Login Buttons */}
-                    <div className="flex justify-center space-x-4">
-                        <button className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
-                            <FcGoogle className="w-6 h-6" />
+                    <div className="flex justify-center space-x-3 md:space-x-4">
+                        <button className="p-2 md:p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+                            <FcGoogle className="w-5 h-5 md:w-6 md:h-6" />
                         </button>
-                        <button className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
-                            <FaFacebook className="w-6 h-6 text-blue-600" />
+                        <button className="p-2 md:p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+                            <FaFacebook className="w-5 h-5 md:w-6 md:h-6 text-blue-600" />
                         </button>
-                        <button className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
-                            <FaTwitter className="w-6 h-6 text-blue-400" />
+                        <button className="p-2 md:p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+                            <FaTwitter className="w-5 h-5 md:w-6 md:h-6 text-blue-400" />
                         </button>
-                        <button className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
-                            <FaLinkedin className="w-6 h-6 text-blue-700" />
+                        <button className="p-2 md:p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+                            <FaLinkedin className="w-5 h-5 md:w-6 md:h-6 text-blue-700" />
                         </button>
                     </div>
 
                     {/* Registration Link */}
-                    <p className="text-center text-gray-600 mt-6">
+                    <p className="text-center text-gray-600 mt-4">
                         Don't have an account?{' '}
                         <Link to="/register" className="text-blue-600 hover:text-blue-700 font-medium">
                             Register
@@ -226,4 +222,4 @@ const Login = () => {
     );
 };
 
-export default Login; 
+export default Login;

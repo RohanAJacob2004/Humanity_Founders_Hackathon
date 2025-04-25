@@ -78,24 +78,24 @@ const PopupTutorial = () => {
                 className="absolute pointer-events-auto"
                 style={{ top: `${top}px`, left: `${rect.right + margin - 60}px` }}
             >
-                <div className="w-[520px] h-[315px] bg-white rounded-[20px] shadow-[0_0_35px_rgba(219,219,219,0.5)] flex flex-col">
+                <div className="w-[520px] h-[260px] bg-white rounded-[20px] shadow-[0_0_35px_rgba(219,219,219,0.5)] flex flex-col">
                     {/* Header */}
                     <div className="h-[82px] flex items-center px-6">
                         <div className="flex items-center gap-4">
-                            <img src="/chatbot.png" alt="AI Agent" className="w-[50px] h-[50px]" />
+                            <img src="/chatbot.png" alt="AI Agent" className="w-[40px] h-[40px]" />
                             <span className="text-xl text-[#333333] font-medium">AI Agent</span>
                         </div>
                     </div>
 
                     {/* Message */}
-                    <div className="flex-1 p-6">
-                        <div className="bg-gradient-to-r from-[#E8F1FF] to-[#F6EEF6] border border-[#CCD7E9] rounded-lg p-4">
+                    <div className="flex-1 p-4">
+                        <div className="bg-gradient-to-r from-[#E8F1FF] to-[#F6EEF6] border border-[#CCD7E9] rounded-lg p-2">
                             <p className="text-[#444444] whitespace-pre-wrap">{message}</p>
                         </div>
                     </div>
 
                     {/* Footer */}
-                    <div className="h-[63px] border-t border-[#E5E5E5] px-6 flex items-center justify-between">
+                    <div className="h-[70px] border-t border-[#E5E5E5] px-6 flex items-center justify-between">
                         <button onClick={skipTutorial} className="text-[#3159FF] text-sm">Skip</button>
                         <button onClick={nextStep} className="bg-[#3159FF] text-white text-sm px-4 py-2 rounded-lg">
                             {currentStep < steps.length - 1 ? `Next (${currentStep + 1}/${steps.length})` : 'Got it'}
