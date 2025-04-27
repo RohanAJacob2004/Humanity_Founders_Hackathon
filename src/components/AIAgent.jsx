@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Bell, User, Link, PlusCircle, Settings, Users, Send, RefreshCcw } from 'lucide-react';
 import axios from 'axios';
+import ReactMarkdown from 'react-markdown';
 
 const AIAgent = () => {
     const [userEmail, setUserEmail] = useState('');
@@ -168,7 +169,7 @@ const AIAgent = () => {
                                         }`}
                                 >
                                     {/* No need to split by \n if using whitespace-pre-wrap */}
-                                    {msg.content}
+                                    <ReactMarkdown>{msg.content}</ReactMarkdown>
                                 </div>
                                 {msg.type === 'user' && (
                                     <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center self-end mb-1"> {/* Adjusted size/alignment */}
@@ -229,8 +230,8 @@ const AIAgent = () => {
                                 onClick={handleSend}
                                 disabled={loading || !input.trim()} // Disable if loading or input is empty
                                 className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${loading || !input.trim()
-                                        ? 'bg-gray-300 cursor-not-allowed'
-                                        : 'bg-blue-100 hover:bg-blue-200' // Use blue shades
+                                    ? 'bg-gray-300 cursor-not-allowed'
+                                    : 'bg-blue-100 hover:bg-blue-200' // Use blue shades
                                     }`}
                             >
                                 <Send className={`w-4 h-4 ${loading || !input.trim() ? 'text-gray-500' : 'text-[#3159FF]'}`} /> {/* Adjusted size and color */}
