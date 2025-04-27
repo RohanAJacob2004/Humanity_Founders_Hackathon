@@ -368,8 +368,14 @@ const Dashboard = () => {
                                         viewBox="0 0 592 90"
                                         fill="none"
                                     >
+                                        {/* Curved path with multiple curves */}
                                         <path
-                                            d="M0 90 L148 45 L296 0 L444 45 L592 90"
+                                            d="M0 70 
+                           C50 90, 70 60, 100 50 
+                           S180 20, 230 10 
+                           S320 5, 350 30 
+                           S430 80, 480 50 
+                           S550 30, 592 60"
                                             stroke="#3059fe"
                                             strokeWidth="2"
                                             strokeDasharray="1000"
@@ -378,20 +384,26 @@ const Dashboard = () => {
                                                 transition: "stroke-dashoffset 3s ease-in-out",
                                                 willChange: "stroke-dashoffset"
                                             }}
+                                            fill="none"
                                         />
                                     </svg>
                                 </div>
 
-                                <div className="absolute top-[41px] left-[149px] h-[298px]">
-                                    <div className="h-[265px] absolute top-[33px] left-[22px] w-5 [background:linear-gradient(180deg,rgba(88,64,186,0.1)_19%,rgba(88,64,186,0.02)_100%)]">
-                                        <div className="w-px h-full bg-gray-200" />
-                                    </div>
+                                {/* Data points properly positioned on the curved line */}
 
-                                    <div className="absolute w-3 h-3 top-[94px] left-[26px] shadow-[0px_2px_2px_#0000001a]">
+                                {/* First point at x=0, y=70 */}
+                                <div className="absolute top-[127px] left-[54px]">
+                                    <div className="absolute w-3 h-3 shadow-[0px_2px_2px_#0000001a]">
                                         <div className="h-3 bg-[#3059fe] rounded-md border-[3px] border-solid border-white rotate-180" />
                                     </div>
+                                </div>
 
-                                    <div className="absolute w-[66px] h-[43px] top-0 left-0">
+                                {/* Point at x=100, y=50 */}
+                                <div className="absolute top-[107px] left-[154px]">
+                                    <div className="absolute w-3 h-3 shadow-[0px_2px_2px_#0000001a]">
+                                        <div className="h-3 bg-[#3059fe] rounded-md border-[3px] border-solid border-white rotate-180" />
+                                    </div>
+                                    <div className="absolute w-[66px] h-[43px] top-[-60px] left-[-33px]">
                                         <div className="flex items-center gap-1 px-3 py-2 bg-[#979797] rounded-md backdrop-blur-[10px]">
                                             <div className="flex flex-col items-start justify-center gap-1">
                                                 <div className="flex items-center gap-2">
@@ -405,6 +417,34 @@ const Dashboard = () => {
                                             alt="Tooltip pointer"
                                             src="/polygon-1.svg"
                                         />
+                                    </div>
+                                </div>
+
+                                {/* Point at x=230, y=10 */}
+                                <div className="absolute top-[67px] left-[284px]">
+                                    <div className="absolute w-3 h-3 shadow-[0px_2px_2px_#0000001a]">
+                                        <div className="h-3 bg-[#3059fe] rounded-md border-[3px] border-solid border-white rotate-180" />
+                                    </div>
+                                </div>
+
+                                {/* Point at x=350, y=30 */}
+                                <div className="absolute top-[87px] left-[404px]">
+                                    <div className="absolute w-3 h-3 shadow-[0px_2px_2px_#0000001a]">
+                                        <div className="h-3 bg-[#3059fe] rounded-md border-[3px] border-solid border-white rotate-180" />
+                                    </div>
+                                </div>
+
+                                {/* Point at x=480, y=50 */}
+                                <div className="absolute top-[107px] left-[534px]">
+                                    <div className="absolute w-3 h-3 shadow-[0px_2px_2px_#0000001a]">
+                                        <div className="h-3 bg-[#3059fe] rounded-md border-[3px] border-solid border-white rotate-180" />
+                                    </div>
+                                </div>
+
+                                {/* Last point at x=592, y=60 */}
+                                <div className="absolute top-[117px] left-[646px]">
+                                    <div className="absolute w-3 h-3 shadow-[0px_2px_2px_#0000001a]">
+                                        <div className="h-3 bg-[#3059fe] rounded-md border-[3px] border-solid border-white rotate-180" />
                                     </div>
                                 </div>
 
